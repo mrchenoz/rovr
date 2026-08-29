@@ -15,7 +15,15 @@ sync predictable — anything listed here is what a merge could conflict on.
 
 Fixes worth contributing back as a PR.
 
-- _nothing yet_
+- **`%rncwd` placeholder looks broken.** `src/rovr/functions/utils.py:370` reads
+  `os.path.realpath(os.path.realpath(cwd))`. `realpath` is idempotent, so that is
+  just `realpath(cwd)` — identical to `%rcwd`, with the `n` (basename) never
+  applied. By the naming convention (`r` = realpath, `n` = basename, cf. `%rnh` =
+  `basename(realpath(highlighted))`) it should be
+  `os.path.basename(os.path.realpath(cwd))`. Small, self-contained fix.
+- **No filename-only copy action.** See `ideas.md` — `%nh` exists for custom
+  commands, but there is no `copy_name` built-in to sit next to
+  `copy_highlighted`.
 
 ## Sync history
 
