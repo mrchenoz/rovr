@@ -43,6 +43,7 @@ these actions interact with your operating system clipboard:
 | action                          | description                                              |
 | ------------------------------- | -------------------------------------------------------- |
 | `system:copy_highlighted`       | copy the highlighted file's path to the system clipboard |
+| `system:copy_name`              | copy the highlighted file's name to the system clipboard |
 | `system:copy_current_directory` | copy the current directory path to the system clipboard  |
 | `system:copy_to_system_clip`    | copy rovr's clipboard contents to the system clipboard   |
 
@@ -179,6 +180,7 @@ right_click = [
   { label = "\uf0c5 Copy", options = [
     { label = "\uf07f Copy in rovr", action = "rovr:copy" },
     { label = "\U000f0147 Copy highlighted file path", action = "system:copy_highlighted" },
+    { label = "\U000f0169 Copy highlighted file name", action = "system:copy_name" },
     { label = "\U000f14e5 Copy current directory path", action = "system:copy_current_directory" },
     { label = "\U000f1265 Copy to OS clipboard", action = "system:copy_to_system_clip" },
   ] },

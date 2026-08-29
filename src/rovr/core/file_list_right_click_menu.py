@@ -107,6 +107,8 @@ def give_me_an_option(
             )
         case "system:copy_highlighted":
             return PartialOption(id="copy_highlighted", disabled=no_items)
+        case "system:copy_name":
+            return PartialOption(id="copy_name", disabled=no_items)
         case "system:copy_current_directory":
             try:
                 getcwd()

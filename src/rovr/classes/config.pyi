@@ -346,6 +346,7 @@ _RightClickActionOneof0 = (
     | Literal["rovr:zip"]
     | Literal["rovr:unzip"]
     | Literal["system:copy_highlighted"]
+    | Literal["system:copy_name"]
     | Literal["system:copy_current_directory"]
     | Literal["system:copy_to_system_clip"]
 )
@@ -368,6 +369,10 @@ r"""The values for the '_RightClickActionOneof0' enum"""
 _RIGHTCLICKACTIONONEOF0_SYSTEM_COLON_COPY_HIGHLIGHTED: Literal[
     "system:copy_highlighted"
 ] = "system:copy_highlighted"
+r"""The values for the '_RightClickActionOneof0' enum"""
+_RIGHTCLICKACTIONONEOF0_SYSTEM_COLON_COPY_NAME: Literal["system:copy_name"] = (
+    "system:copy_name"
+)
 r"""The values for the '_RightClickActionOneof0' enum"""
 _RIGHTCLICKACTIONONEOF0_SYSTEM_COLON_COPY_CURRENT_DIRECTORY: Literal[
     "system:copy_current_directory"
@@ -1060,6 +1065,7 @@ class _RovrConfigKeybindsExtraCopy(TypedDict, total=False):
     open_popup: list[str]
     copy_to_rovr: list[str]
     copy_highlighted: list[str]
+    copy_name: list[str]
     copy_to_system_clip: list[str]
     copy_current_directory: list[str]
 

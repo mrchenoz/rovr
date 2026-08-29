@@ -32,6 +32,7 @@
             "rovr:zip",
             "rovr:unzip",
             "system:copy_highlighted",
+            "system:copy_name",
             "system:copy_current_directory",
             "system:copy_to_system_clip"
           ]
@@ -994,6 +995,11 @@
               "$ref": "#/definitions/keybind",
               "description": "Copy only the highlighted file's path to the system clipboard",
               "display_name": "Copy highlighted file path"
+            },
+            "copy_name": {
+              "$ref": "#/definitions/keybind",
+              "description": "Copy only the highlighted file's name to the system clipboard",
+              "display_name": "Copy highlighted file name"
             },
             "copy_to_system_clip": {
               "$ref": "#/definitions/keybind",
