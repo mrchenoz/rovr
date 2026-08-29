@@ -12,7 +12,7 @@ Template to copy:
 -->
 
 ## Copy just the filename, not the full path
-**Status:** exploring — workaround found, proper fix worth writing
+**Status:** shipped — on branch `feat/copy-name`, bound to `Y` `n`
 **Why:** `Y` `p` copies the whole path. Often I only want the bare filename.
 
 **Finding: no filename-only copy exists.** All three copy actions deal in paths,
@@ -49,15 +49,28 @@ Two constraints found the hard way:
   Don't write `printf %s` in the command — `%s` expands to the selected files.
   Use `echo -n` instead.
 
-**Proper fix — good first upstream contribution.** Add a `copy_name` action
-beside `copy_highlighted`, roughly:
+**Built it.** `copy_name` action on `feat/copy-name`, bound to `n` in the copy
+menu (`Y` `n` on the default keymap, and `n` in both the sane and vim presets),
+plus `system:copy_name` for the right-click menu.
 
-```python
-def copy_name(self) -> None:
-    ...
-    self.app.copy_to_clipboard(basename(highlighted.dir_entry.path))
-```
+Registries that had to be touched — more than expected, worth remembering for
+the next action I add:
 
-Files to touch: `action_buttons/copy_button.py`, `assets/keys.toml`,
-`assets/config.toml` (`keybinds.extra_copy`), `assets/schema.json` (action enum
-+ keybinds), and the `right_click` default menu.
+| File | What |
+|---|---|
+| `action_buttons/copy_button.py` | `copy_name()` + `action_name()`, popup entry, key handler, click handler |
+| `assets/keys.toml` | `[file_list.Y]` and `[copy_menu]` |
+| `assets/presets/{sane,vim}.toml` | both, or preset users get no binding |
+| `assets/config.toml` | `[keybinds.extra_copy]` default + right-click entry |
+| `assets/schema.json` | action enum + keybind property |
+| `classes/config.pyi` | generated stubs (`poe schema-to-dict` regenerates) |
+| `core/file_list_right_click_menu.py` | `case "system:copy_name"` |
+| `docs/.../{features/context-menu,reference/keybindings}.mdx` | ×2, `dev/` copies differ from released |
+
+The right-click menu dispatches by *method name* — `file_list_right_click_menu.py:232`
+does `hasattr(CopyButton, option.id)` — so `id="copy_name"` found `copy_name()`
+with no extra wiring.
+
+The keys system validates *contexts* (`variables/maps.py`), not action names, so
+`copy.name` needed no registration; Textual resolves it to `action_name()` on
+the widget holding `key_contexts = ("copy",)`.
