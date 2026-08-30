@@ -41,5 +41,6 @@ and hides the source code while you're on it.
 
 | File | Purpose |
 |---|---|
+| `cheatsheet.md` | Full rovr keybinding reference |
 | `ideas.md` | Features and changes I want to make |
 | `fork-log.md` | What I carry locally, and what to send upstream |
