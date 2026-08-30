@@ -1,11 +1,59 @@
 # rovr cheat sheet
 
-The **default** keymap, transcribed from `src/rovr/assets/keys.toml` at upstream
-`eb4ffd2`. Keys marked 🔧 are my fork's additions and are not upstream.
+Transcribed from `src/rovr/assets/keys.toml` at upstream `eb4ffd2`.
+
+- 🔧 = my fork's addition, not upstream.
+- ⚠ = **does not exist on the legacy keymap** — see below.
 
 > **Press `?` inside rovr** for the live keybind list — it always reflects your
-> actual config, including anything you have rebound. This sheet is for reading
-> away from the terminal.
+> actual config. This sheet is for reading away from the terminal.
+
+## ⚠ First: which keymap are you actually on?
+
+rovr 0.10.x has **two** keybinding systems, and which one is live depends on
+whether a file exists:
+
+| `keys.toml` in your config dir | Active system |
+|---|---|
+| absent (**default on a fresh install**) | legacy `[keybinds]` tables in `config.toml` |
+| present | `keys.toml` — what this sheet documents |
+
+`load_keys()` returns `{}` when the file is missing, so rovr falls back to the
+legacy map. Check with:
+
+```sh
+ls ~/.config/rovr/keys.toml                          # Linux
+ls ~/Library/Application\ Support/rovr/keys.toml     # macOS
+```
+
+### Getting onto the map this sheet describes
+
+One line is enough — this is byte-for-byte what rovr's own setup wizard writes:
+
+```sh
+printf 'inherit = "base"\n' > ~/.config/rovr/keys.toml
+```
+
+Worth doing: the legacy map is marked `# legacy version` in `config.toml`, has
+no vim/sane presets, and `load_keys()` carries a `TODO: for v0.11.0: force
+keys.toml`. One caveat — any `[keybinds]` customisation in your `config.toml`
+goes inert once `keys.toml` exists; port it across first.
+
+### If you stay on the legacy map
+
+These differ, and everything marked ⚠ below is simply unavailable:
+
+| Action | Legacy (no keys.toml) | This sheet |
+|---|---|---|
+| History forward | `space` | `alt+right` |
+| History back | `backspace` · `u` | + `alt+left` |
+| Quit without cd | *unavailable* | `Q` |
+| Jump to directory (zoxide) | *unavailable* | `z` |
+| Search for files (fd) | *unavailable* | `f` |
+| Search contents (ripgrep) | *unavailable* | `\` |
+| Per-path sort toggle | *unavailable* | `,` `p` |
+
+Everything else on this sheet is identical across both.
 
 ## Why the same key does different things
 
@@ -24,7 +72,7 @@ preview pane has focus. Same keys, different context.
 | Key | Action |
 |---|---|
 | `q` | Quit, cd-ing to the current directory |
-| `Q` | Quit **without** cd-ing |
+| `Q` ⚠ | Quit **without** cd-ing |
 | `ctrl+q` | Quit |
 | `ctrl+p` | Command palette |
 | `ctrl+z` | Suspend rovr |
@@ -64,9 +112,9 @@ Uppercase toggles the panel, lowercase focuses it.
 |---|---|
 | `?` | Show keybindings |
 | `>` | Open shell |
-| `z` | Jump to a directory (zoxide) |
-| `f` | Search for files (fd) |
-| `\` | Search file contents (ripgrep) |
+| `z` ⚠ | Jump to a directory (zoxide) |
+| `f` ⚠ | Search for files (fd) |
+| `\` ⚠ | Search file contents (ripgrep) |
 
 ---
 
@@ -86,8 +134,8 @@ Uppercase toggles the panel, lowercase focuses it.
 | `G` · `end` | Last item |
 | `ctrl+f` · `pagedown` | Page down |
 | `ctrl+b` · `pageup` | Page up |
-| `u` · `backspace` · `alt+left` | Previous directory (history) |
-| `alt+right` | Next directory (history) |
+| `u` · `backspace` · `alt+left` ⚠ | Previous directory (history) |
+| `alt+right` ⚠ | Next directory (history) — `space` on the legacy map |
 | `/` | Search the file list |
 
 `u` goes **back** through history, like vim's undo — not "up a directory".
@@ -154,7 +202,7 @@ pause and read it.
 | `,` `c` | By created time |
 | `,` `m` | By modified time |
 | `,` `d` | Toggle descending |
-| `,` `p` | Toggle sorting for this path only |
+| `,` `p` ⚠ | Toggle sorting for this path only |
 
 ---
 
