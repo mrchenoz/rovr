@@ -294,7 +294,49 @@ User keymap lives beside `config.toml`:
 | macOS | `~/Library/Application Support/rovr/keys.toml` |
 | Windows | `%LOCALAPPDATA%\rovr\keys.toml` |
 
-Your file merges over the inherited preset, so you only list what changes.
+### `inherit` is mandatory in practice
+
+**Always start the file with `inherit`.** Without it, `load_keys()` builds from
+an empty base, so the *only* bindings that exist are the ones you listed —
+every other default is gone. That looks exactly like "all my shortcuts stopped
+working".
+
+```toml
+# WRONG - silently wipes all other keybindings
+[file_list]
+"D" = "delete"
+```
+
+```toml
+# RIGHT - your bindings merge over the base preset
+inherit = "base"
+
+[file_list]
+"D" = "delete"
+```
+
+Use `base` (the default keymap above), `vim`, or `sane`.
+
+### Don't rebind a chord leader
+
+`Y` and `,` are chord *leaders* — they open a menu. Binding one to an action
+directly means the menu never opens and you lose everything under it:
+
+```toml
+# WRONG - the whole copy menu is now unreachable
+[file_list]
+"Y" = { action = "copy.name" }
+```
+
+To change what a chord key does, edit inside the chord's own table:
+
+```toml
+inherit = "base"
+
+[file_list.Y]
+"f" = { action = "copy.name", desc = "Copy the file name" }
+```
+
 Set a key to `noop` to disable it without rebinding:
 
 ```toml
@@ -302,8 +344,14 @@ inherit = "base"
 
 [file_list]
 "q" = "noop"
-"Y" = { action = "copy.name", desc = "Copy the file name" }
 ```
+
+### Creating a keys.toml changes which system is in charge
+
+In 0.10.x the `keys.toml` system is opt-in. With no such file, rovr uses the
+older `[keybinds]` tables in `config.toml`. The moment a `keys.toml` exists,
+`keys.toml` takes over — so a half-finished one can break far more than the
+keys it mentions. Delete the file to fall straight back to defaults.
 
 Printable keys use their character; everything else uses Textual's key names
 (`ctrl+j`, `shift+f10`, `pagedown`).
