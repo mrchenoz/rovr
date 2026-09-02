@@ -85,6 +85,10 @@ class CopyButton(Button):
         self.notify(f"Copied: {text}", title="Copy Text", severity="information")
         self._hide_popup()
 
+    async def action_name(self) -> None:
+        """Copy just the highlighted file's name (fork addition; see fork-log.md)."""
+        await self.action_text("%nh")
+
     def _hide_popup(self) -> None:
         with suppress(NoMatches):
             self.app.query_one(CopyPanelOptions).go_hide()
@@ -194,6 +198,12 @@ class CopyPanelOptions(PopupOptionList):
                 disabled=should_disable,
             ),
             CopyPanelOption(
+                get_shortcut("copy_menu", "copy.name", "extra_copy", "copy_name"),
+                "Copy single file name ",
+                "name",
+                disabled=should_disable,
+            ),
+            CopyPanelOption(
                 get_shortcut(
                     "copy_menu",
                     "copy.current_directory",
@@ -244,6 +254,8 @@ class CopyPanelOptions(PopupOptionList):
             self.button.action_press()
         elif check_key(event, config["keybinds"]["extra_copy"]["copy_highlighted"]):
             self.button.copy_text(await expand_command(self.app, "%h"))
+        elif check_key(event, config["keybinds"]["extra_copy"]["copy_name"]):
+            self.button.copy_text(await expand_command(self.app, "%nh"))
         elif check_key(event, config["keybinds"]["extra_copy"]["copy_to_system_clip"]):
             self.button.copy_to_system_clip()
         elif check_key(
@@ -262,6 +274,8 @@ class CopyPanelOptions(PopupOptionList):
             self.button.action_press()
         elif event.option.id == "path":
             self.button.copy_text(await expand_command(self.app, "%h"))
+        elif event.option.id == "name":
+            self.button.copy_text(await expand_command(self.app, "%nh"))
         elif event.option.id == "parent_path":
             self.button.copy_current_directory()
         elif event.option.id == "system":

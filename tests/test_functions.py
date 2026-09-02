@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Any, cast
@@ -201,3 +202,46 @@ async def test_expand_command_tab_highlights(tmp_path: Path) -> None:
 
 async def _empty_selection() -> list[str]:
     return []
+
+
+@pytest.mark.asyncio
+async def test_expand_command_cwd_placeholders(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The four cwd placeholders each apply their own transform.
+
+    `n` means basename and `r` means realpath, so `%rncwd` must be the basename
+    of the resolved path - not merely the resolved path again.
+    """
+    real = tmp_path / "real-dir"
+    real.mkdir()
+    link = tmp_path / "link-dir"
+    try:
+        link.symlink_to(real, target_is_directory=True)
+    except (OSError, NotImplementedError):
+        pytest.skip("symlinks unavailable on this platform")
+
+    monkeypatch.setattr(utils, "getcwd", lambda: str(link))
+    tab = SimpleNamespace(
+        directory=normalise(str(link)),
+        focus_on=None,
+        session=SimpleNamespace(lastHighlighted={}),
+    )
+    app = SimpleNamespace(
+        file_list=SimpleNamespace(
+            highlighted_option=None,
+            get_selected_objects=_empty_selection,
+        ),
+        tabWidget=SimpleNamespace(active_tab=tab, query=lambda _tab_type: [tab]),
+        query_one=lambda _selector: SimpleNamespace(selected=[]),
+        notify=lambda *_args, **_kwargs: None,
+    )
+
+    cwd, rcwd, ncwd, rncwd = (
+        await utils.expand_command(cast(Any, app), "%cwd\n%rcwd\n%ncwd\n%rncwd")
+    ).split("\n")
+
+    assert cwd == normalise(str(link))
+    assert rcwd == os.path.realpath(str(link))
+    assert ncwd == "link-dir"
+    assert rncwd == "real-dir"

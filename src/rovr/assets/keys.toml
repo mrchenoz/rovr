@@ -78,6 +78,7 @@
 desc = "Copy"
 "y" = { action = "copy.to_rovr", desc = "Copy files to the rovr clipboard" }
 "p" = { action = 'copy.text("%h")', desc = "Copy the highlighted file path" }
+"n" = { action = 'copy.text("%nh")', desc = "Copy the highlighted file name" }
 "s" = { action = "copy.to_system_clip", desc = "Copy files to the system clipboard" }
 "d" = { action = 'copy.text("%cwd")', desc = "Copy the current directory path" }
 
@@ -147,6 +148,7 @@ desc = "Sort order"
 [copy_menu]
 "y" = "copy.to_rovr"
 "p" = "copy.highlighted"
+"n" = "copy.name"
 "s" = "copy.to_system_clip"
 "d" = "copy.current_directory"
 

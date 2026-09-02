@@ -69,6 +69,7 @@ right_click = [
   { label = "\uf0c5 Copy", options = [
     { label = "\uf07f Copy in rovr", action = "rovr:copy" },
     { label = "\U000f0147 Copy highlighted file path", action = "system:copy_highlighted" },
+    { label = "\U000f0169 Copy highlighted file name", action = "system:copy_name" },
     { label = "\U000f14e5 Copy current directory path", action = "system:copy_current_directory" },
     { label = "\U000f1265 Copy to OS clipboard", action = "system:copy_to_system_clip" },
     # { label = " Copy SHA256", action = { run = 'pwsh -nop -c "(Get-FileHash -Algorithm SHA256 \"%s\").Hash | Set-Clipboard"', run_type = "background" }, if = { directory = false } }
@@ -226,6 +227,7 @@ preview_scroll_right = []
 open_popup = ["Y"]
 copy_to_rovr = ["y"]
 copy_highlighted = ["p"]
+copy_name = ["n"]
 copy_to_system_clip = ["s"]
 copy_current_directory = ["d"]
 [keybinds.change_sort_order]

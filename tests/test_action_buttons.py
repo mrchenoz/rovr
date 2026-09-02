@@ -430,3 +430,26 @@ async def test_toggles(tmp_path: Path) -> None:
         await pilot.pause()
         popup.action_select()
         await iter_until(pilot, lambda: app.query_one(StateManager).sort_descending)
+
+
+@pytest.mark.asyncio
+async def test_copy_button_copy_name(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """`copy.name` yields the bare filename where `copy.text("%h")` yields the path."""
+    app = Application(tmp_path.as_posix())
+    open(tmp_path / "test_file.txt", "w").close()
+    copied: list[str] = []
+    async with app.run_test(size=(143, 37)) as pilot:
+        await pilot.pause()
+        monkeypatch.setattr(app, "copy_to_clipboard", copied.append)
+        button = app.query_one(CopyButton)
+
+        await button.action_name()
+        await pilot.pause()
+        assert copied == ["test_file.txt"]
+
+        await button.action_text("%h")
+        await pilot.pause()
+        assert copied[1].endswith("test_file.txt")
+        assert copied[1] != copied[0]

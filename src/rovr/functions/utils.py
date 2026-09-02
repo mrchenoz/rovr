@@ -364,7 +364,7 @@ async def expand_command(app: App, command: str | list[str]) -> str | list[str]:
                         "%cwd": lambda: cwd,
                         "%rcwd": lambda: os.path.realpath(cwd),
                         "%ncwd": lambda: os.path.basename(cwd),
-                        "%rncwd": lambda: os.path.realpath(os.path.realpath(cwd)),
+                        "%rncwd": lambda: os.path.basename(os.path.realpath(cwd)),
                         "%h": lambda: highlighted,
                         "%rh": lambda: os.path.realpath(highlighted),
                         "%nh": lambda: os.path.basename(highlighted),
