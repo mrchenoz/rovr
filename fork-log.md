@@ -2,6 +2,11 @@
 
 How my fork differs from upstream [NSPC911/rovr](https://github.com/NSPC911/rovr).
 
+**2026-09-02:** the fork moved to [mrchenoz/rovr](https://github.com/mrchenoz/rovr) as a detached
+copy (origin = mrchenoz, upstream = NSPC911; jeremy-oz/rovr left untouched). Upstream PRs are no
+longer a goal — the aim is to track upstream quickly and add what we need. This log and the
+`feat/*` branches are kept so PRs stay easy to carve out if that changes.
+
 ## Local patches I'm carrying
 
 Changes of mine that are not upstream. Keeping this current is what makes each
@@ -9,8 +14,8 @@ sync predictable — anything listed here is what a merge could conflict on.
 
 | Change | Branch / commit | Send upstream? |
 |---|---|---|
-| `copy_name` action — copy just the filename | `feat/copy-name` / `08d71f2` | yes, ready |
-| `%rncwd` returns basename | `feat/copy-name` / `8bd7c7f` | yes, ready |
+| `copy_name` action — copy just the filename | `feat/copy-name` / `eb0f256` | yes, ready (now a thin `action_name` → `copy.text("%nh")`; only the `copy_menu` key, right-click entry, schema and docs remain fork code) |
+| `%rncwd` returns basename | `feat/copy-name` / `3fa4d93` | yes, ready |
 
 Both live on one branch as two clean commits, so either can be cherry-picked
 into its own upstream PR.
@@ -34,13 +39,14 @@ Fixes worth contributing back as a PR.
 | Date | Synced to | Notes |
 |---|---|---|
 | 2026-08-29 | `eb4ffd2` | Fast-forward, 4 commits (chord keys #341 + app fixes) |
+| 2026-09-02 | `53fe05b` | Fast-forward, 14 commits. Rebase of `feat/copy-name` conflicted in `copy_button.py`, `keys.toml`, `sane.toml`, `vim.toml`: upstream replaced `copy.highlighted` keybinds with a generic `copy.text("%h")` + placeholders (`%nh` = basename of highlighted). Resolved by dropping our `copy_name()` method and binding `n` to `copy.text("%nh")`. Suite: 182 passed, 1 pre-existing env failure (`test_default_pinned_sidebar` wants `~/Desktop`), 2 skipped. |
 
 ## Installing a branch
 
 `uv` installs straight from git — no build step needed:
 
 ```sh
-uv tool install --force --python 3.13 git+https://github.com/jeremy-oz/rovr@feat/copy-name
+uv tool install --force --python 3.13 "rovr @ git+https://github.com/mrchenoz/rovr.git@master"
 ```
 
 - `--force` is required: the branch keeps version `0.10.1.post1`, so uv sees no
