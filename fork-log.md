@@ -7,6 +7,11 @@ copy (origin = mrchenoz, upstream = NSPC911; jeremy-oz/rovr left untouched). Ups
 longer a goal — the aim is to track upstream quickly and add what we need. This log and the
 `feat/*` branches are kept so PRs stay easy to carve out if that changes.
 
+**2026-09-02:** the fork moved to [mrchenoz/rovr](https://github.com/mrchenoz/rovr) as a detached
+copy (origin = mrchenoz, upstream = NSPC911; jeremy-oz/rovr left untouched). Upstream PRs are no
+longer a goal — the aim is to track upstream quickly and add what we need. This log and the
+`feat/*` branches are kept so PRs stay easy to carve out if that changes.
+
 ## Local patches I'm carrying
 
 Changes of mine that are not upstream. Keeping this current is what makes each
@@ -39,6 +44,7 @@ Fixes worth contributing back as a PR.
 | Date | Synced to | Notes |
 |---|---|---|
 | 2026-08-29 | `eb4ffd2` | Fast-forward, 4 commits (chord keys #341 + app fixes) |
+| 2026-09-02 | `53fe05b` | Fast-forward, 14 commits. Rebase of `feat/copy-name` conflicted in `copy_button.py`, `keys.toml`, `sane.toml`, `vim.toml`: upstream replaced `copy.highlighted` keybinds with a generic `copy.text("%h")` + placeholders (`%nh` = basename of highlighted). Resolved by dropping our `copy_name()` method and binding `n` to `copy.text("%nh")`. Suite: 182 passed, 1 pre-existing env failure (`test_default_pinned_sidebar` wants `~/Desktop`), 2 skipped. |
 | 2026-09-02 | `53fe05b` | Fast-forward, 14 commits. Rebase of `feat/copy-name` conflicted in `copy_button.py`, `keys.toml`, `sane.toml`, `vim.toml`: upstream replaced `copy.highlighted` keybinds with a generic `copy.text("%h")` + placeholders (`%nh` = basename of highlighted). Resolved by dropping our `copy_name()` method and binding `n` to `copy.text("%nh")`. Suite: 182 passed, 1 pre-existing env failure (`test_default_pinned_sidebar` wants `~/Desktop`), 2 skipped. |
 
 ## Installing a branch
